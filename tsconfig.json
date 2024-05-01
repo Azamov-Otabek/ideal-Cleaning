@@ -11,13 +11,15 @@
       "@components": ["./src/components"],
       "@pages": ["./src/pages"],
       "@hooks": ["./src/hooks"],
-      "@utils": ["./src/utils"],
+      "@cocies": ["./src/utils/cokies.ts"],
       "@styles": ["./src/styles"],
       "@layout": ["./src/layout"],
       "@images": ["./src/assets/images"],
-      "@store": ["./src/store"],
-      "@plugins": ["./src/plugins"],
       "@ui": ["./src/components/ui"],
+      "@servicesAuth": ["./src/service/auth"],
+      "@validation": ["./src/utils/validation.ts"],
+      "@authInterface": ["./src/interface/auth.ts"],
+      "@modals": ["./src/components/modals"]
     },
 
     /* Bundler mode */

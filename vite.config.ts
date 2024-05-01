@@ -12,14 +12,15 @@ export default defineConfig({
       { find: "@components", replacement: '/src/components'},
       { find: "@containers", replacement: '/src/components/containers'},
       { find: "@hooks", replacement: '/src/hooks'},
-      { find: "@utils", replacement: '/src/utils'},
+      { find: "@cocies", replacement: '/src/utils/cokies.ts'},
       { find: "@layout", replacement: '/src/layout'},
-      { find: "@plugins", replacement: '/src/plugins'}, 
       { find: "@layout", replacement: '/src/layout'},
       { find: "@router", replacement: '/src/router'},
       { find: "@images", replacement: '/src/assets/images'},
-      { find: "@store", replacement: '/src/store'},
-      { find: "@plugins", replacement: '/src/plugins'}
+      { find: "@servicesAuth", replacement: '/src/service/auth'},
+      { find: "@validation", replacement: '/src/utils/validation.ts'},
+      { find: "@authInterface", replacement: '/src/interface/auth.ts'},
+      { find: "@modals", replacement: '/src/components/modals'}
     ]
   }
 })

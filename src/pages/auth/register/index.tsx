@@ -1,34 +1,24 @@
 import {Form, Formik, Field, ErrorMessage} from 'formik' 
 import TextField from '@mui/material/TextField';
-import { useEffect, useState } from 'react';
+import {useState } from 'react';
 import Button from '@mui/material/Button';
-import { Link, useNavigate } from 'react-router-dom';
-import * as yup from 'yup';
-import authStore from '@store/auth';
+import { Link } from 'react-router-dom';
+import authStore from '@servicesAuth';
 import { ToastContainer, toast } from 'react-toastify';
-import { AuthModal } from '@components';
+import { AuthModal } from '@modals';
+import {userRegisterValidate} from "@validation"
+import {Register} from "@authInterface"
+import { useMask } from '@react-input/mask';
 
 function index() {
-  const navigate = useNavigate()
-  const { register, verify} = authStore()
-  const [verifycod, setverifycod] = useState(0)
   const [isActive, setActive] = useState(false)
   const [ismodal, setModal] = useState(false)
   const [email, setemail] = useState("")
 
-
-  function isActivePassword(){
-    if(isActive)
-      setActive(false)
-    else
-      setActive(true)
-  } 
-  const userValidate = yup.object().shape({
-      full_name: yup.string().min(6, 'Ismingiz 6 harfdan kam bolmasligi kerak !').required("Iltimos soro'vni to'ldiring ! "),
-      phone_number: yup.string().matches(/^\+998\d{9}$/, "Iltimos raqamingizni to'gri kiriting !").required("Iltimos so'rovni to'ldiring !"),
-      email: yup.string().email("Iltimos emailni to'gri kiriting !").required("Iltimos so'rovni to'ldiring !"),
-      password: yup.string().min(8, "Parolingiz 8 tadan kam bo'lmasin !").matches( /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, "Parol kamida bitta katta harf, bitta kichik harf, bitta raqam va bitta maxsus belgidan iborat bo'lishi kerak").required("Iltimos so'rovni to'ldiring !"),
-  })
+  const inputRef = useMask({
+    mask: "+998 (__) ___-__-__",
+    replacement: { _: /\d/ },
+  });
   const initialvalue = {
     full_name: '',
     phone_number: '',
@@ -37,15 +27,17 @@ function index() {
     verify: '',
   }
 
-  const handleSubmit = async(value:object) => {
+  const handleSubmit = async(value:Register) => {
+      const phone = value.phone_number.replace(/\D/g, "");
+      const newFormData = { ...value, phone_number: `+${phone}` };
       if(value.password == value.verify) {
         const user = {
-          full_name: value.full_name,
-          phone_number: value.phone_number,
-          email: value.email,
-          password: value.password
+          full_name: newFormData.full_name,
+          phone_number: newFormData.phone_number,
+          email: newFormData.email,
+          password: newFormData.password
         }
-        const response = await register(user)
+        const response:any = await authStore.register(user)
         if(response.status == 200) {
           setModal(true)
           setemail(user.email)
@@ -55,28 +47,7 @@ function index() {
       }
   }
 
-  async function verifyRegister(){
-    const user = {
-      email: email,
-      code: verifycod
-    }
-    if(user.code != 0) {
-        const response = await verify(user)
-        if(response.status == 201) {
-          toast.success('Ro‘yxatdan o‘tganingiz', {autoClose : 1200})
-          setTimeout(() => {
-            navigate('/')
-          }, 1600);
-          setModal(false)
-        }
-    }
-    
-  }
-
-  useEffect(() => {
-    verifyRegister()
-  }, [verifycod]);
-  return (
+  return (  
     <>
     <ToastContainer/>
       <div className='w-[537px] mx-auto'>
@@ -85,7 +56,7 @@ function index() {
           <p className='text-[30px] font-semibold'>ortga</p>  
         </Link>
         <h1 className='text-center text-[56px] font-bold mt-[50px] mb-[80px]'>Ro‘yxatdan o‘tish</h1>
-        <Formik initialValues={initialvalue} validationSchema={userValidate} onSubmit={handleSubmit}>
+        <Formik initialValues={initialvalue} validationSchema={userRegisterValidate} onSubmit={handleSubmit}>
             <Form>
               <label className='block mb-[40px]'>
                 <Field
@@ -107,8 +78,8 @@ function index() {
                 variant="filled"
                 sx={{width: '100%'}}
                 name="phone_number"
-                placeholder="+998 99 999 99 99"
                 autoComplete="off"
+                inputRef={inputRef}
                 />
                 <ErrorMessage name='phone_number' component={'p'} className='text-[red]'/>
               </label>
@@ -135,7 +106,7 @@ function index() {
                 name="password"
                 autoComplete="off"
                 />
-                 <i onClick={isActivePassword} className={isActive ? 'bx bx-hide absolute text-[35px] right-4 cursor-pointer z-10 top-[10px]' : 'bx bx-show absolute text-[35px] right-4 cursor-pointer z-10 top-[10px]'}></i>
+                 <i onClick={()=> setActive(!isActive)} className={isActive ? 'bx bx-hide absolute text-[35px] right-4 cursor-pointer z-10 top-[10px]' : 'bx bx-show absolute text-[35px] right-4 cursor-pointer z-10 top-[10px]'}></i>
                 <ErrorMessage name='password' component={'p'} className='text-[red]'/>
               </label>
               <label className='block mb-[40px]'>
@@ -159,7 +130,7 @@ function index() {
         </Formik>
       </div>
       {
-        ismodal && <AuthModal state={setverifycod}/>
+        ismodal && <AuthModal isActive={isActive} setActive={setActive} email={email}/>
       }
     </>
   )

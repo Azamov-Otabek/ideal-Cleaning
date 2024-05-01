@@ -4,20 +4,27 @@ import TextField from '@mui/material/TextField';
 import * as yup from 'yup';
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { setsendCode } from "@authInterface";
+import authStore from "@servicesAuth";
+import UpdatePassword from "../updatePasword"
 
-function index(props:any) {
+function index(props:setsendCode) {
+  const [isUptdate, setUpdate] = useState(false)
   const schema = yup.object().shape({
     email: yup.string().email("Emailni to'g'ri kiriting !").required()
   });
-  const [cod, setCod] = useState(0)
+  const [cod, setCod] = useState("")
 
   async function verifyButton(){
    const email = {
-    email : cod
+      email : cod
    }
    try {
     await schema.validate(email);
-    props.state(cod)
+    const response:any = await authStore.forgotPassword(email)
+    if(response.status === 200){
+      setUpdate(true)
+    }
   } catch (error) {
     if (error instanceof yup.ValidationError) {
       toast.error("Emailni to'g'ri kiriting!", {autoClose: 1200});
@@ -25,9 +32,6 @@ function index(props:any) {
   }
    
   }
-
-
-
   return (
     <>
       <ToastContainer/>
@@ -45,6 +49,9 @@ function index(props:any) {
            <button onClick={verifyButton} className=" block w-[537px] mx-auto bg-[#2389DA] text-white font-bold py-[24px] mt-[20px] rounded-xl">Kod yuborish</button>
       </div>
     </div>
+    {
+      isUptdate && <UpdatePassword email={cod} setupdate={setUpdate} setsendCode={props.setsendCode} />
+    }
     </>
   )
 }
