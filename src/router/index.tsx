@@ -9,8 +9,9 @@ export default function Router(){
             <Route path="/" element={<App/>}>
                 <Route path="/" element={<Login/>}/>
                 <Route path="/register" element={<Register/>}/>
-                <Route path="/home/*" element={<MainLayout/>}>
+                <Route path="/mainlayout/*" element={<MainLayout/>}>
                     <Route index element={<Home/>}/>
+                    <Route path="home" element={<Home/>}/>
                     <Route path="clients" element={<Clients/>}/>
                     <Route path="settings" element={<Settings/>}/>
                     <Route path="message" element={<Message/>}/>

@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
 import TextField from '@mui/material/TextField';
 import * as yup from 'yup';
 import { ToastContainer, toast } from "react-toastify";
@@ -36,10 +35,10 @@ function index(props:setsendCode) {
     <>
       <ToastContainer/>
       <div className='absolute top-0 left-0 w-full bg-white h-[100vh] z-20'>
-      <Link to={'/'} className='absolute top-[100px] left-[145px] flex items-center'>
+      <div onClick={() => props.setsendCode(false)} className='cursor-pointer absolute top-[100px] left-[145px] flex items-center'>
           <i className='bx bx-arrow-back text-[50px] '></i>
           <p className='text-[30px] font-semibold'>ortga</p>           
-      </Link>
+      </div>
       <div className='w-[1200px] mx-auto mt-[311px] rounded-xl'>
             <p className="text-[56px] font-bold text-[black] text-center mb-[14px]">Parolni tiklash</p>
             <p className="text-[40px] font-semibold text-[black] mb-[62px] text-center">Sizga kod yuborishimiz uchun email’ingizni kiriting</p>

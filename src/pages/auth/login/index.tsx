@@ -24,7 +24,7 @@ function index() {
     if(response.status === 200){
       toast.success('Tizimga muvaffaqiyayli kirildi !', {autoClose: 1200})
       setTimeout(() => {
-        navigate('/home')
+        navigate('/mainlayout')
       }, 1600);
     }else{
       toast.error('Tizimga kirishda xatolik yuz berdi!', {autoClose: 1200})
