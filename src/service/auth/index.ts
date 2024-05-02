@@ -45,6 +45,7 @@ const authStore:Request = {
             return response;
         }catch (err:any) {
             toast.error("Xatolik yuz berdi")
+            return err
           }
     },
     verify: async(payload) => {

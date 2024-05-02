@@ -8,36 +8,36 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 export const root = [
     {
         name: "Asosiy",
-        path: "home",
+        path: "/mainlayout",
         element: <Home/>,
         icon: <HomeOutlinedIcon/>
     },
     {
-        path: "orders",
+        path: "/mainlayout/orders",
         element: <Orders/>,
         icon: <ListAltOutlinedIcon/>,
         name: "Buyurtmalar"
     },
     {
-        path: "clients",
+        path: "/mainlayout/clients",
         element: <Clients/>,
         icon: <PeopleOutlinedIcon/>,
         name: "Mijozlar"
     },
     {
-        path: "message",
+        path: "/mainlayout/message",
         element: <Message/>,
         icon: <EmailOutlinedIcon/>,
         name: "SMS marketing"
     },
     {
-        path: "services",
+        path: "/mainlayout/services",
         element: <Services/>,
         icon: <SupportAgentOutlinedIcon/>,
         name: "Xizmatlar"
     },
     {
-        path: "settings",
+        path: "/mainlayout/settings",
         element: <Settings/>,
         icon: <SettingsOutlinedIcon/>,
         name: "Sozlamalar"

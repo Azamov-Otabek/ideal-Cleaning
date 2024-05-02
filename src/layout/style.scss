@@ -1,11 +1,8 @@
 .active{
-    background: #2389DA;
-    color: white;
-    transition: all 0.2s linear;
+    transition: all 0.2s ease;
+}
 
-    div{
-        .rasm{
-            color: white;
-        }
-    }
+
+.rasm{
+    color: white !important;
 }

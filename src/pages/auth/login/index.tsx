@@ -9,6 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import {SendCodeEmail} from '@modals'
 import {userLoginValidate} from '@validation'
 import {Login} from "@authInterface"
+import Cookies from 'js-cookie';
 
 
 function index() {
@@ -23,6 +24,8 @@ function index() {
     const response:any = await authStore.login(value)
     if(response.status === 200){
       toast.success('Tizimga muvaffaqiyayli kirildi !', {autoClose: 1200})
+      const userData = JSON.stringify({...response.data, password: value.password})
+      Cookies.set('user', userData)
       setTimeout(() => {
         navigate('/mainlayout')
       }, 1600);

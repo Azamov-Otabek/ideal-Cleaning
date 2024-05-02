@@ -9,8 +9,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
-import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
-import Button from '@mui/material/Button';  
+import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import { styled, alpha } from '@mui/material/styles';
@@ -95,19 +94,20 @@ export default function ResponsiveDrawer(props: Props) {
     },
   }));
 
+  const { pathname } = useLocation()
   const drawer = (
     <div className='bg-white'>
       <Toolbar className='mt-[21px] pb-[22px] pl-[68px]'>
-       <Link to={'home'}> <img src={Logo} alt="" /></Link>
+       <Link to={'/mainlayout'}> <img src={Logo} alt="" /></Link>
       </Toolbar>
       <div className='mt-[63px]'>
         <List>
           {root.map((text, index) => (
             <ListItem key={index} disablePadding>
-              <NavLink to={text.path} className="mb-[40px] w-[360px] mr-8 ml-6 rounded-2xl">
-                  <div className='flex ml-[50px] h-[71px] items-center px-[20px]'>
-                      <ListItemIcon className='rasm'>{text.icon}</ListItemIcon>
-                      <h1 className='text-[24px] font-semibold'>{text.name}</h1>
+              <NavLink to={text.path} className={text.path === pathname ? "bg-[#2389DA] text-white mb-[40px] w-[360px] mr-8 ml-6 rounded-2xl": 'mb-[40px] w-[360px] mr-8 ml-6 rounded-2xl'}>
+                  <div className='flex sm:ml-[50px] h-[71px] items-center px-[20px]'>
+                      <ListItemIcon className={text.path === pathname ? 'rasm': ''}>{text.icon}</ListItemIcon>
+                      <h1 className='text-[16px] sm:text-[24px] font-semibold'>{text.name}</h1>
                   </div>
               </NavLink>
             </ListItem>
@@ -155,12 +155,17 @@ export default function ResponsiveDrawer(props: Props) {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={goLogOut}>My account</MenuItem>
+      <MenuItem onClick={myAccaunt}>My account</MenuItem>
+      <MenuItem onClick={goLogOut}>Logout</MenuItem>
     </Menu>
   );
 
   if(!Cookies.get('token')){
     navigate('/')
+  }
+
+  function myAccaunt() {
+    navigate('settings')
   }
 
 
@@ -181,7 +186,7 @@ export default function ResponsiveDrawer(props: Props) {
         }}
       >
         <Toolbar>
-          <div className='pl-[57px] flex py-[30px] justify-between w-full'> 
+          <div className='pl-[47px] flex py-[30px] justify-between w-full'> 
             <div className='flex'>
               <IconButton
               color="inherit"  
@@ -192,8 +197,7 @@ export default function ResponsiveDrawer(props: Props) {
             >
               <MenuIcon />
               </IconButton>       
-              <Button className='bg-[#109CF1] w-[321px]'  variant="contained">Buyurtma qo‘shish</Button>
-            <Search sx={{display: 'flex', background: "#E2E2E2"}}>
+            <Search sx={{display: {xs: 'none', sm:'flex'}, background: "#E2E2E2"}}>
               <SearchIconWrapper>
                 <SearchIcon sx={{color: '#767676'}}/>
               </SearchIconWrapper>
@@ -245,7 +249,7 @@ export default function ResponsiveDrawer(props: Props) {
           }}
           sx={{
             display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 260 },
           }}
         >
           {drawer}
@@ -263,12 +267,13 @@ export default function ResponsiveDrawer(props: Props) {
       </Box>
   
       <Box
+        className='bg-[#E2E2E2]'
         component="main"
         sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
       >
         <Toolbar />
-       <div className='w-full  bg-[#E2E2E2] h-screen'>
-        <div className='bg-[#E2E2E2] py-[68px] px-[57px] h-screen max-w-[1600px] mx-auto'>
+       <div className='w-full h-screen'>
+        <div className='py-[68px] px-[57px] h-screen max-w-[1600px] mx-auto'>
             <Outlet />
           </div>
        </div>
