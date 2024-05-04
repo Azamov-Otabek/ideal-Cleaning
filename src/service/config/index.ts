@@ -8,7 +8,7 @@ const http = axios.create({
 http.interceptors.request.use((config:any) => {
     let token = Cookies.get('token')
     if(token){
-        config.headers.Authorization = `Bearer ${token}`
+        config.headers.Authorization = token
     }
     return config
 })

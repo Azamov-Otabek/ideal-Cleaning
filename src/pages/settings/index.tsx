@@ -13,7 +13,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import authStore from '@servicesAuth';
 import { useState } from 'react';
 
-
 function index() {
   const user:any = Cookies.get('user')
   const user2:MyAccaunt = JSON.parse(user)
@@ -38,12 +37,7 @@ function index() {
           email: user2.email,
           password: value.new_password
         }
-
-        console.log(email)
-        console.log(value);
-        console.log(user2);
         const response = await authStore.updatePassword(email)
-        console.log(response);
         response.status == 201 && toast.success("Parol muvaffaqiyatli o'zgartirildi")
       }
       else{

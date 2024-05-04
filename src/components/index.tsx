@@ -1,3 +1,3 @@
 import Header from "./header"
-
-export {Header}
+import Table from "./table"
+export {Header, Table}
