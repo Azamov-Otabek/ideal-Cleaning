@@ -17,7 +17,7 @@ interface FadeProps {
 }
 
 interface propsemail{
-    email:string;
+    email: any;
     getdata: () => any;
 }
 
@@ -71,26 +71,31 @@ export default function SpringModal(props:propsemail) {
   const handleClose = () => setOpen(false);
 
 
+  React.useEffect(() => {
+    handleOpen()
+  }, [])
     async function postData(e:any){
         e.preventDefault();
         const payload = {
+            id: props.email.id,
             name: e.target[0].value,
             price: +e.target[2].value,
-            owner_email: props.email
+            owner_email: props.email.owner_email
         }
-        const response = await serviceStore.post(payload)
+        console.log(payload);
+        const response = await serviceStore.put(payload)
         if(response.status == 201){
             setTimeout(() => {
               props.getdata()
               handleClose()
             }, 1700)
           }
+        handleClose()
     }
   return (
     <>
     <ToastContainer />
         <div>
-      <button className='bg-[#2389DA] py-[15px] px-[25px] rounded-lg text-[white] font-bold' onClick={handleOpen}>Mahsulot qo'shish</button>
       <Modal
         aria-labelledby="spring-modal-title"
         aria-describedby="spring-modal-description"
@@ -114,6 +119,7 @@ export default function SpringModal(props:propsemail) {
                     label="Xizmat nomini kiriting"
                     id='Outlined'
                     variant="outlined"
+                    placeholder={props.email.name}
                     />    
                 </label>
                 <label className='block w-full p-[10px]'>
@@ -124,9 +130,10 @@ export default function SpringModal(props:propsemail) {
                     id='Outlined'
                     variant="outlined"
                     type='number'
+                    placeholder={props.email.price}
                     />    
                 </label>
-                <button type='submit' className='block mx-auto bg-[#2389DA] py-[15px] px-[25px] rounded-lg text-[white] font-bold '>Qo'shish</button>
+                <button type='submit' className='block mx-auto bg-[#2389DA] py-[15px] px-[25px] rounded-lg text-[white] font-bold '>O'zgartirish</button>
               </form>
           </Box>
         </Fade>

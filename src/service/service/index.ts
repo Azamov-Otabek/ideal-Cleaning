@@ -6,7 +6,7 @@ import { Reques } from "../../interface/service";
 const serviceStore:Reques = {
     delete: async(id) => {
         try{    
-            const response = await http.delete(`/service?id=/${id}`)
+            const response = await http.delete(`/service?id=${id}`)
             return response
         }catch(err){
             toast.error('Xatolik bor !')
