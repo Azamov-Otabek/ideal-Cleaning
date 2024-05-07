@@ -5,7 +5,7 @@ import Modal from '@mui/material/Modal';
 import { useSpring, animated } from '@react-spring/web';
 import { TextField } from '@mui/material';
 import serviceStore from '../../../service/service';
-import { ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 interface FadeProps {
   children: React.ReactElement;
@@ -19,6 +19,7 @@ interface FadeProps {
 interface propsemail{
     email: any;
     getdata: () => any;
+    ids: string;
 }
 
 const Fade = React.forwardRef<HTMLDivElement, FadeProps>(function Fade(props, ref) {
@@ -70,32 +71,29 @@ export default function SpringModal(props:propsemail) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-
-  React.useEffect(() => {
-    handleOpen()
-  }, [])
     async function postData(e:any){
         e.preventDefault();
         const payload = {
-            id: props.email.id,
+            id: props.ids,
             name: e.target[0].value,
             price: +e.target[2].value,
-            owner_email: props.email.owner_email
+            owner_email: props.email
         }
         console.log(payload);
         const response = await serviceStore.put(payload)
         if(response.status == 201){
+          toast.success("Muvaffaqiyatli o'zgartirildi", {autoClose: 500})
             setTimeout(() => {
               props.getdata()
               handleClose()
-            }, 1700)
+            }, 700)
           }
         handleClose()
     }
   return (
     <>
-    <ToastContainer />
         <div>
+          <button><i onClick={handleOpen} className='bx bx-edit-alt text-[35px]' ></i> </button>
       <Modal
         aria-labelledby="spring-modal-title"
         aria-describedby="spring-modal-description"

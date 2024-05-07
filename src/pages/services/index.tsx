@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import serviceStore from "../../service/service"
 import { MyAccaunt } from "../../interface/settings"
 import Cookies from "js-cookie"
-import { ServiceAdd, UpdateModal } from "@modals"
+import { ServiceAdd } from "@modals"
 import { ToastContainer, toast } from "react-toastify"
 
 
@@ -12,15 +12,15 @@ function index() {
   const user:any = Cookies.get('user')
   const user2:MyAccaunt = JSON.parse(user)
   let arrIds:any[] = []
-  const [update, setupdate] = useState({})
-  const [updateModal, setupdateModal] = useState(false)
+  const [isLoading, setisLoading] = useState(false)
 
   const thead = [
-    { name: 'checkbox', title: ' ', class: 'w-[30px] '},
-    { name: 'name', title: 'Xizmat nomi' , class: 'w-[60px]' },
-    { name: 'price', title: "Narxi (so‘m)", class: 'w-[120px]' },
-    { name: 'countuser', title: "Foydalanishlar soni", class: 'w-[100px]' },
-    { name: 'buttons', title: "", class: 'w-[300px]' }
+    { name: 'check', title: '', class: 'w-[1px]'},
+    { name: 'id', title: 'T/R', class: 'w-[1px]'},
+    { name: 'name', title: 'Xizmat nomi' , class: 'w-[10px]' },
+    { name: 'price', title: "Narxi (so‘m)", class: 'w-[10px]' },
+    { name: 'countuser', title: "Foydalanishlar soni", class: 'w-[10px]' },
+    { name: 'action', title: "", class: 'w-[500px]' }
   ]
 
   function checkedBox(e:any){
@@ -32,6 +32,7 @@ function index() {
   }
 
   async function getData(){
+    setisLoading(true)
       const payload = {
         page: 1,
         limit: 10,
@@ -40,25 +41,15 @@ function index() {
       const response: any = await serviceStore.get(payload);
       if(response.data.services != null)
           setData(response.data.services);
+      else
+          setData([])
+    setisLoading(false)
    
 
   }
 
-
-  async function updateData(e:any){
-    const payload = {
-      id: e.id,
-      owner_email: user2.email,
-      name: e.name,
-      price: e.price
-    }
-    setupdate(payload);
-    setupdateModal(true)
-  }
-
   useEffect(()=> {
     getData()
-    setupdateModal(false)
   }, [])
 
   async function deleteAllDatas(){
@@ -71,7 +62,7 @@ function index() {
         toast.success("Mahsulotlar muvaffaqiyatli o'chirildi", {autoClose: 700})
         setTimeout(() => {
           getData()
-        }, 1600);
+        }, 900);
       }
       arrIds = []
     }else{
@@ -84,11 +75,10 @@ function index() {
     <ToastContainer />
       <div>
       <div className="flex justify-end mb-5 gap-5">
-          {updateModal && <UpdateModal getdata={getData} email={update}/>}
           <button className='bg-[#e44040] py-[15px] px-[25px] rounded-lg text-[white] font-bold' onClick={deleteAllDatas}>Delete All</button>
           <ServiceAdd email={user2.email} getdata={getData}/>
       </div>
-      <Table data={data} thead={thead} checkedBox={checkedBox} getData={getData} updateData={updateData} />
+      <Table thead={thead} tbody={data} checkedBox={checkedBox} email={user2.email} getdata={getData} isLoading={isLoading}/>
     </div>
     </>
   )

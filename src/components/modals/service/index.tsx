@@ -5,7 +5,7 @@ import Modal from '@mui/material/Modal';
 import { useSpring, animated } from '@react-spring/web';
 import { TextField } from '@mui/material';
 import serviceStore from '../../../service/service';
-import { ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 interface FadeProps {
   children: React.ReactElement;
@@ -80,6 +80,7 @@ export default function SpringModal(props:propsemail) {
         }
         const response = await serviceStore.post(payload)
         if(response.status == 201){
+           toast.success('Muvaffaqiyatli qoshildi', {autoClose: 1200})
             setTimeout(() => {
               props.getdata()
               handleClose()
@@ -88,7 +89,6 @@ export default function SpringModal(props:propsemail) {
     }
   return (
     <>
-    <ToastContainer />
         <div>
       <button className='bg-[#2389DA] py-[15px] px-[25px] rounded-lg text-[white] font-bold' onClick={handleOpen}>Mahsulot qo'shish</button>
       <Modal
