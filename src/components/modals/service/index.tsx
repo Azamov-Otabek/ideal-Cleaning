@@ -76,7 +76,7 @@ export default function SpringModal(props:propsemail) {
         const payload = {
             name: e.target[0].value,
             price: +e.target[2].value,
-            owner_email: props.email
+            owner_id: props.email
         }
         const response = await serviceStore.post(payload)
         if(response.status == 201){

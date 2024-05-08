@@ -13,6 +13,7 @@ function index() {
   const user2:MyAccaunt = JSON.parse(user)
   let arrIds:any[] = []
   const [isLoading, setisLoading] = useState(false)
+  const [ispage, setisPage] = useState(1)
 
   const thead = [
     { name: 'check', title: '', class: 'w-[1px]'},
@@ -34,11 +35,12 @@ function index() {
   async function getData(){
     setisLoading(true)
       const payload = {
-        page: 1,
-        limit: 10,
-        owner_email: user2.email,
+        page: ispage,
+        limit: 5,
+        owner_id: user2.id,
       };
       const response: any = await serviceStore.get(payload);
+      console.log(response);
       if(response.data.services != null)
           setData(response.data.services);
       else
@@ -50,7 +52,7 @@ function index() {
 
   useEffect(()=> {
     getData()
-  }, [])
+  }, [ispage])
 
   async function deleteAllDatas(){
     if(arrIds.length){
@@ -76,9 +78,14 @@ function index() {
       <div>
       <div className="flex justify-end mb-5 gap-5">
           <button className='bg-[#e44040] py-[15px] px-[25px] rounded-lg text-[white] font-bold' onClick={deleteAllDatas}>Delete All</button>
-          <ServiceAdd email={user2.email} getdata={getData}/>
+          <ServiceAdd email={user2.id} getdata={getData}/>
       </div>
-      <Table thead={thead} tbody={data} checkedBox={checkedBox} email={user2.email} getdata={getData} isLoading={isLoading}/>
+      <Table thead={thead} tbody={data} checkedBox={checkedBox} email={user2.id} getdata={getData} isLoading={isLoading}/>
+      <div className="flex items-center justify-center gap-5 mt-5">
+        {ispage == 1 ? <button className="text-[20px] py-[8px] px-[20px] bg-[#2389DA] text-[white] font-bold rounded-xl" disabled>-</button> : <button className="text-[20px] py-[8px] px-[20px] bg-[#2389DA] text-[white] font-bold rounded-xl" onClick={()=> setisPage(ispage-1)}>-</button>}
+        <h1 className="text-[20px]">{ispage}</h1>
+        {ispage == 4 ? <button className="text-[20px] py-[8px] px-[20px] bg-[#2389DA] text-[white] font-bold rounded-xl" disabled>+</button> : <button className="text-[20px] py-[8px] px-[20px] bg-[#2389DA] text-[white] font-bold rounded-xl" onClick={()=> setisPage(ispage+1)}>+</button>}
+      </div>
     </div>
     </>
   )

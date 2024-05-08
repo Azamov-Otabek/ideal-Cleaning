@@ -16,7 +16,6 @@ function index(props: any) {
   const { thead, tbody }: any = props;
 
   async function deleteItem(id: any) {
-    console.log(id);
     const response = await serviceStore.delete(id);
     if (response.status == 200) {
       toast.success('Deleted', { autoClose: 500 });
@@ -56,7 +55,7 @@ function index(props: any) {
                 {thead.map((item: any, index: any) => {
                   return (
                     <TableCell align="left" key={index} className={item.class + ' bg-white'}>
-                      <TableSortLabel hideSortIcon>{item.title}</TableSortLabel>
+                      <TableSortLabel  hideSortIcon>{item.title}</TableSortLabel>
                     </TableCell>
                   );
                 })}

@@ -14,7 +14,7 @@ const serviceStore:Reques = {
     },
     post: async(payload) => {
         try{
-            const response = await http.post("/service/create", payload)
+            const response = await http.post("/service", payload)
             return response
         }catch(err){
             toast.error('Xatolik bor !')
@@ -22,8 +22,9 @@ const serviceStore:Reques = {
     },
     get: async(payload) => {
         try{
-            const response = await http.get(`/service/get-all?page=${payload.page}&limit=${payload.limit}&owner_email=${payload.owner_email}`);
+            const response = await http.get(`/service/all?page=${payload.page}&limit=${payload.limit}&owner_id=${payload.owner_id}`);
             return response
+            
         }catch(err){
             console.log(err);
             toast.error('Xatolik bor !')
@@ -39,7 +40,7 @@ const serviceStore:Reques = {
     },
     put: async(payload) => {
         try{
-            const response = await http.put(`/service/update`, payload)
+            const response = await http.put(`/service`, payload)
             return response
         }catch(err){
             toast.error('Xatolik bor !')

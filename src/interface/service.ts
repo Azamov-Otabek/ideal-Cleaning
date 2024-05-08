@@ -1,6 +1,6 @@
 export interface post {
     name: string;
-    owner_email: string;
+    owner_id: string;
     price: number;
 }
 
@@ -11,7 +11,7 @@ export interface idDelete{
 export interface get{
     page:number;
     limit:number;
-    owner_email:string;
+    owner_id:string;
 }
 
 export interface search extends get{
@@ -21,7 +21,7 @@ export interface search extends get{
 export interface put{
     id:string;
     name:string;
-    owner_email:string;
+    owner_id:string;
     price:number;
 }
 
