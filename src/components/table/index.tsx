@@ -11,19 +11,28 @@ import { UpdateModal } from '@modals';
 import serviceStore from '../../service/service';
 import { toast } from 'react-toastify';
 import Skeleton from '@mui/material/Skeleton';
+import OrderStore from '../../store/orders';
+import { useStore } from 'zustand';
+import OrderModal from '../ordermodal'
 
 function index(props: any) {
   const { thead, tbody }: any = props;
-
+  const {deleteOrder}:any = useStore(OrderStore)
+ 
   async function deleteItem(id: any) {
-    const response = await serviceStore.delete(id);
-    if (response.status == 200) {
-      toast.success('Deleted', { autoClose: 500 });
-      setTimeout(() => {
-        props.getdata();
-      }, 1000);
-    } else {
-      toast.error('Error', { autoClose: 500 });
+    if(props.name != 'order'){
+      const response = await serviceStore.delete(id);
+      if (response.status == 200) {
+        toast.success('Deleted', { autoClose: 500 });
+        setTimeout(() => {
+          props.getdata();
+        }, 1000);
+      } else {
+        toast.error('Error', { autoClose: 500 });
+      }
+    }else if(props.name == 'order'){
+        await deleteOrder({ id: id });
+        window.location.reload();
     }
   }
 
@@ -52,7 +61,7 @@ function index(props: any) {
           <Table>
             <TableHead>
               <TableRow>
-                {thead.map((item: any, index: any) => {
+                {thead?.map((item: any, index: any) => {
                   return (
                     <TableCell align="left" key={index} className={item.class + ' bg-white'}>
                       <TableSortLabel  hideSortIcon>{item.title}</TableSortLabel>
@@ -62,7 +71,7 @@ function index(props: any) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {tbody.map((item: any, index: any) => {
+              {tbody?.map((item: any, index: any) => {
                 return (
                   <TableRow
                     key={index}
@@ -95,7 +104,8 @@ function index(props: any) {
                           ) : data.name == 'action' ? (
                             <div className="flex gap-[30px]">
                               <i onClick={() => deleteItem(item.id)} className="bx bx-basket text-[35px]"></i>{' '}
-                              <UpdateModal email={props.email} getdata={props.getdata} ids={item.id} />
+                              {props.subtitle ? <OrderModal  client={item} dataa={props.subtitle} title='update' method={'update'}/> 
+                              :  <UpdateModal email={props.email} getdata={props.getdata} ids={item.id} />}
                             </div>
                           ) : (
                             item[data.name]
