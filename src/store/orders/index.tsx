@@ -6,7 +6,7 @@ const OrderStore = create((set) => ({
     count: 0,
     order: [],
     getOrder: async(payload:any) => {
-        const response = await http.get(`/order/all?page=${payload.page}&limit=${payload.limit}`)
+        const response = await http.get(`/order/search?page=${payload.page}&limit=${payload.limit}&name=${payload.name}`)
         set({order: response.data.orders_list})
         set({count: response.data.total})
     },

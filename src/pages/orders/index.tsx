@@ -55,6 +55,7 @@ function index() {
       const payloadd = {
         page: ispage,
         limit: 5,
+        name: search || ''
       };
       getOrder(payloadd)
     setisLoading(false)
