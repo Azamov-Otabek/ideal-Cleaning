@@ -7,15 +7,16 @@ const OrderStore = create((set) => ({
     order: [],
     getOrder: async(payload:any) => {
         const response = await http.get(`/order/all?page=${payload.page}&limit=${payload.limit}`)
-        console.log(response);
         set({order: response.data.orders_list})
-        set({total: response.data.total})
+        set({count: response.data.total})
     },
     postOrder: async(payload:any) => {
         try{
             const response = await http.post(`/order`, payload)
             if(response.status === 201)
                 toast.success('Muvaffaqiyatli qoshildi', {autoClose: 1200})
+                set((state:any)=>({order: state.order.length < 5 ?[...state.order, response?.data] : [...state.order]})) 
+                set((state:any)=>({count: state.count += 1}))
             return response
         }catch(err){
             toast.error('Xatolik bor!')
@@ -36,6 +37,7 @@ const OrderStore = create((set) => ({
             const response = await http.delete(`/order?id=${payload.id}`)
             if(response.status === 200)
                 toast.success('Muvaffaqiyatli olib tashlandi', {autoClose: 1200})
+                set((state:any)=>({count: state.count -= 1}))
             return response
         }catch(err){
             toast.error('Xatolik bor!')

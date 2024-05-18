@@ -66,13 +66,15 @@ export default function SpringModal(props:any) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const {putOrder}:any = useStore(OrderStore)
+
+
     async function postData(e:any){
         e.preventDefault();
 
         const payload = {
             amount: +e.target[0].value,
-            client_phonenumber: e.target[2].value,
-            cliet_full_name: e.target[4].value,
+            client_phone_number: e.target[2].value,
+            client_full_name: e.target[4].value,
             service_id: e.target[6].value
         }
        if(props.method == 'update'){
@@ -82,7 +84,6 @@ export default function SpringModal(props:any) {
         await putOrder(payload)
        }else{
         await props.postData(payload);
-        window.location.reload();
        }
     }
   return (

@@ -32,7 +32,7 @@ function index(props: any) {
       }
     }else if(props.name == 'order'){
         await deleteOrder({ id: id });
-        window.location.reload();
+        
     }
   }
 
