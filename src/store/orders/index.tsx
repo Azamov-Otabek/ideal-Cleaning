@@ -5,6 +5,7 @@ import {toast} from 'react-toastify'
 const OrderStore = create((set) => ({
     count: 0,
     order: [],
+    countStxs: [],
     getOrder: async(payload:any) => {
         const response = await http.get(`/order/search?page=${payload.page}&limit=${payload.limit}&name=${payload.name}`)
         set({order: response.data.orders_list})
@@ -41,6 +42,14 @@ const OrderStore = create((set) => ({
             return response
         }catch(err){
             toast.error('Xatolik bor!')
+        }
+    },
+    get_orders: async(payload:any) => {
+        try{
+            const response = await http.get(`/orders?start=${payload.start}&end=${payload.end}`, payload)
+            return response
+        }catch(err){
+            console.log(err);
         }
     }
 
